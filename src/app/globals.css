@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #050505;
+  --color-foreground: #ffffff;
+  --color-accent-blue: #0070f3;
+  --color-accent-purple: #7928ca;
+  --color-glass-bg: rgba(13, 13, 13, 0.7);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-outfit), sans-serif;
+    overflow-x: hidden;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--color-glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-glass-border);
+  }
+
+  .grid-background {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-accent-purple;
+  }
+
+  .text-purple-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-purple to-pink-500;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-scanline {
+  animation: scanline 8s linear infinite;
+}
+
+@keyframes glitch-hud {
+  0% {
+    transform: translate(0);
+    filter: brightness(1);
+  }
+
+  20% {
+    transform: translate(-2px, 2px);
+    filter: brightness(2) contrast(1.5);
+  }
+
+  40% {
+    transform: translate(2px, -2px);
+    filter: brightness(0.5);
+  }
+
+  60% {
+    transform: translate(-1px, -1px);
+    filter: brightness(1.5);
+  }
+
+  80% {
+    transform: translate(1px, 1px);
+    filter: brightness(2);
+  }
+
+  100% {
+    transform: translate(0);
+    filter: brightness(1);
+  }
+}
+
+.animate-glitch-hud {
+  animation: glitch-hud 0.3s ease-in-out;
+}
