@@ -13,8 +13,11 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Creative Technologist | Portfolio",
+    title: "Himanshu Portfolio",
     description: "High-end interactive portfolio of a Designer-Engineer hybrid.",
+    icons: {
+        icon: "/favicon.svg",
+    },
 };
 
 
