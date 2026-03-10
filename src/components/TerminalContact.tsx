@@ -10,6 +10,11 @@ import {
   initialSystemStats,
   type ContactHistoryItem as HistoryItem,
 } from "@/components/terminal-contact/constants";
+import {
+  SOCIAL_COMMAND_ALIASES,
+  SOCIAL_MEDIA_LINKS,
+  SOCIAL_MEDIA_LIST,
+} from "@/lib/social";
 
 import { type TerminalMode } from "@/lib/knowledge";
 
@@ -125,7 +130,7 @@ export default function TerminalContact({
     setCursorPos(0);
     setIsProcessing(true);
 
-    // COMMANDS (Work in any step) ---
+    // COMMANDS (work in any step) ---
     if (query === "clear") {
       setHistory([
         {
@@ -160,7 +165,24 @@ export default function TerminalContact({
         setStep("confirm");
       } else if (query === "help") {
         await streamResponse(
-          "PROTOCOL_DIRECTORY:\n- hi / hello / Hi / Hello :: initiate handshake\n- back :: return to origin\n- matrix :: run neural override\n- clear :: purge buffer",
+          "PROTOCOL_DIRECTORY:\n- hi / hello / Hi / Hello :: initiate handshake\n- socialmedia / social media / social :: list all social links\n- instagram | linkedin | x | github | gethub :: get one social link\n- back :: return to origin\n- matrix :: run neural override\n- clear :: purge buffer",
+        );
+      } else if (
+        query === "socialmedia" ||
+        query === "social media" ||
+        query === "social" ||
+        query === "socal media"
+      ) {
+        await streamResponse(
+          `SOCIAL_MEDIA_LINKS:\n${SOCIAL_MEDIA_LIST}`,
+          "info",
+        );
+      } else if (query in SOCIAL_COMMAND_ALIASES) {
+        const platform =
+          SOCIAL_COMMAND_ALIASES[query as keyof typeof SOCIAL_COMMAND_ALIASES];
+        await streamResponse(
+          `${platform.toUpperCase()} :: ${SOCIAL_MEDIA_LINKS[platform]}`,
+          "success",
         );
       } else if (query === "matrix") {
         setIsMatrix(true);

@@ -33,6 +33,8 @@ function HomeContent() {
   const [currentBranch, setCurrentBranch] = useState(
     resumeAbout ? "identity" : resumeArtifacts ? "artifacts" : "main",
   );
+  const [isAtBottom, setIsAtBottom] = useState(false);
+  const [hasUserScrolled, setHasUserScrolled] = useState(false);
 
   useEffect(() => {
     if (!hasResume || typeof window === "undefined") return;
@@ -72,6 +74,8 @@ function HomeContent() {
     // User requested: Design -> Bottom (Contact), Code -> Top (About)
     setTargetSection(side === "design" ? "contact" : "about");
     setPhase("content");
+    setIsAtBottom(false);
+    setHasUserScrolled(false);
     setCurrentBranch(side === "design" ? "neural" : "identity");
   };
 
@@ -87,13 +91,17 @@ function HomeContent() {
     }
   }, [phase, targetSection]);
 
-  // Track scroll to update branch
+  // Track section + bottom state only in content mode
   useEffect(() => {
     if (phase !== "content") return;
 
     const handleScroll = () => {
       const scrollPos = window.scrollY;
       const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      const nearBottom = scrollPos + windowHeight >= docHeight - 12;
+
+      setIsAtBottom(nearBottom);
 
       if (scrollPos < windowHeight * 0.8) {
         setCurrentBranch("identity");
@@ -104,8 +112,42 @@ function HomeContent() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "content") return;
+
+    const markUserScrolled = () => setHasUserScrolled(true);
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === "ArrowDown" ||
+        e.key === "ArrowUp" ||
+        e.key === "PageDown" ||
+        e.key === "PageUp" ||
+        e.key === "Home" ||
+        e.key === "End" ||
+        e.key === " "
+      ) {
+        setHasUserScrolled(true);
+      }
+    };
+
+    window.addEventListener("wheel", markUserScrolled, { passive: true });
+    window.addEventListener("touchmove", markUserScrolled, { passive: true });
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("wheel", markUserScrolled);
+      window.removeEventListener("touchmove", markUserScrolled);
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [phase]);
 
   return (
@@ -142,6 +184,7 @@ function HomeContent() {
               onBack={() => {
                 setPhase("hero");
                 setCurrentBranch("main");
+                setIsAtBottom(false);
               }}
               mode={activeMode}
             />
@@ -175,6 +218,7 @@ function HomeContent() {
               onBack={() => {
                 setPhase("hero");
                 setCurrentBranch("main");
+                setIsAtBottom(false);
               }}
               mode={activeMode}
             />
@@ -182,7 +226,14 @@ function HomeContent() {
         )}
       </AnimatePresence>
 
-      <StatusBar activeSection={currentBranch} />
+      <StatusBar
+        activeSection={currentBranch}
+        variant={
+          phase === "content" && hasUserScrolled && isAtBottom
+            ? "bottom"
+            : "github"
+        }
+      />
 
       {/* Persistent Static Grain */}
       <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.02] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />

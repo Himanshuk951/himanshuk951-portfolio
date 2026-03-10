@@ -20,6 +20,11 @@ import {
 } from "@/components/about-me/constants";
 
 import { TERMINAL_KNOWLEDGE_BASE, type TerminalMode } from "@/lib/knowledge";
+import {
+  SOCIAL_COMMAND_ALIASES,
+  SOCIAL_MEDIA_LINKS,
+  SOCIAL_MEDIA_LIST,
+} from "@/lib/social";
 
 export default function AboutMe({
   onBack,
@@ -136,10 +141,26 @@ export default function AboutMe({
     } else if (TERMINAL_KNOWLEDGE_BASE[query]) {
       const response = TERMINAL_KNOWLEDGE_BASE[query][mode];
       await streamResponse(response);
+    } else if (
+      query === "socialmedia" ||
+      query === "social media" ||
+      query === "social" ||
+      query === "socal media"
+    ) {
+      await streamResponse(`SOCIAL_MEDIA_LINKS:\n${SOCIAL_MEDIA_LIST}`, {
+        image: "/social-media.svg",
+      });
+    } else if (query in SOCIAL_COMMAND_ALIASES) {
+      const platform =
+        SOCIAL_COMMAND_ALIASES[query as keyof typeof SOCIAL_COMMAND_ALIASES];
+      await streamResponse(
+        `${platform.toUpperCase()} :: ${SOCIAL_MEDIA_LINKS[platform]}`,
+        { image: `/social-${platform}.svg` },
+      );
     } else if (query === "help") {
       const knowledgeCommands = Object.keys(TERMINAL_KNOWLEDGE_BASE).join(", ");
       await streamResponse(
-        `AVAILABLE PROTOCOLS:\n- skills :: fetch technical stack\n- contact :: initialize handshake\n- cat [file] :: read filesystem entry\n- back :: return to origin\n- clear :: purge buffer\n\nKNOWLEDGE_BASE QUERY:\n[ ${knowledgeCommands} ]`,
+        `AVAILABLE PROTOCOLS:\n- skills :: fetch technical stack\n- socialmedia / social media / social :: list all social links\n- instagram | linkedin | x | github | gethub :: get one social link\n- contact :: initialize handshake\n- cat [file] :: read filesystem entry\n- back :: return to origin\n- clear :: purge buffer\n\nKNOWLEDGE_BASE QUERY:\n[ ${knowledgeCommands} ]`,
       );
     } else if (query === "skills") {
       await streamResponse(
@@ -333,15 +354,26 @@ export default function AboutMe({
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={springTransition}
-                            className="w-full md:w-48 aspect-[3/4] md:aspect-[2/3] rounded-lg border border-white/10 overflow-hidden shadow-2xl relative shrink-0"
+                            className={cn(
+                              "relative shrink-0 overflow-hidden",
+                              msg.image.startsWith("/social-")
+                                ? "w-14 h-14 rounded-md border border-white/10 bg-white/5"
+                                : "w-full md:w-48 aspect-[3/4] md:aspect-[2/3] rounded-lg border border-white/10 shadow-2xl",
+                            )}
                           >
                             <Image
                               src={msg.image}
                               alt="Creator"
                               fill
-                              className="object-cover grayscale brightness-90 hover:grayscale-0 transition-all duration-700"
+                              className={cn(
+                                msg.image.startsWith("/social-")
+                                  ? "object-contain p-2 grayscale-0 brightness-100"
+                                  : "object-cover grayscale brightness-90 hover:grayscale-0 transition-all duration-700",
+                              )}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                            {!msg.image.startsWith("/social-") && (
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                            )}
                           </motion.div>
                         )}
                         <div className="flex-1">

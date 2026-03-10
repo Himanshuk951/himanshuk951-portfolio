@@ -27,7 +27,7 @@ export const galleryProjects: GalleryProject[] = [
       "Personal portfolio website showcasing selected projects and design work.",
     tech: ["Next.js", "TypeScript", "React", "Tailwind CSS", "Framer Motion"],
     stats: "0 Stars",
-    link: "#",
-    github: "#",
+    link: "https://himanshuk951-portfolio.vercel.app/",
+    github: "https://github.com/Himanshuk951/himanshuk951-portfolio",
   },
 ];

@@ -26,7 +26,7 @@ export const artifactProjects: ArtifactProject[] = [
       "Personal portfolio website showcasing selected projects and design work.",
     year: "2026",
     type: "code",
-    link: "#",
+    link: "https://himanshuk951-portfolio.vercel.app/",
     image: "/portfoliocover.png",
   },
 ];

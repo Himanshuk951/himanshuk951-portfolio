@@ -168,7 +168,7 @@ export default function ArtifactsGallery() {
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <div
-                    className="absolute inset-0 bg-cover bg-center"
+                    className="absolute inset-0 bg-contain bg-center bg-no-repeat"
                     style={{ backgroundImage: `url(${activeProject.image})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/10" />

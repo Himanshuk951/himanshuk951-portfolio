@@ -21,6 +21,9 @@ export function getInitialContactHistory(
       type: "system",
       content: `INITIALIZING_CYBER_HUB... READY FOR HANDSHAKE. MODE: ${mode.toUpperCase()}`,
     },
+    {
+      type: "system",
+      content: "CURRENTLY AVAILABLE FOR NEW ADVENTURES. SAY HELLO!",
+    },
   ];
 }
-
