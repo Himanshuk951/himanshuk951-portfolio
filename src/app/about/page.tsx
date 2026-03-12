@@ -18,17 +18,17 @@ const timeline = [
   {
     year: "2026",
     role: "Creative Developer",
-    note: "Building premium interactive experiences with a strong product lens.",
+    note: "Exploring interactive web experiences and combining design with development.",
   },
   {
     year: "2025",
-    role: "Frontend Engineer",
-    note: "Shipped conversion-focused interfaces with reusable component architecture.",
+    role: "Frontend Developer",
+    note: "Building responsive interfaces and learning reusable component-based architecture.",
   },
   {
     year: "2024",
     role: "UI/UX Designer",
-    note: "Designed end-to-end product flows, visual systems, and high-fidelity prototypes.",
+    note: "Learning product design, visual systems, and creating high-fidelity prototypes in Figma.",
   },
 ];
 
@@ -127,9 +127,7 @@ export default function AboutPage() {
                 key={item}
                 className="text-2xl font-semibold leading-tight text-zinc-200 md:text-3xl"
               >
-                <span className="mr-3 text-accent-blue/80">
-                  0{idx + 1}.
-                </span>
+                <span className="mr-3 text-accent-blue/80">0{idx + 1}.</span>
                 {item}
               </p>
             ))}
@@ -148,8 +146,13 @@ export default function AboutPage() {
           </h2>
           <div className="mt-7 space-y-6">
             {timeline.map((item) => (
-              <div key={item.year} className="grid gap-2 md:grid-cols-[110px_1fr]">
-                <p className="text-lg font-black text-accent-blue">{item.year}</p>
+              <div
+                key={item.year}
+                className="grid gap-2 md:grid-cols-[110px_1fr]"
+              >
+                <p className="text-lg font-black text-accent-blue">
+                  {item.year}
+                </p>
                 <div>
                   <p className="text-xl font-bold text-zinc-100">{item.role}</p>
                   <p className="mt-1 text-zinc-400">{item.note}</p>
