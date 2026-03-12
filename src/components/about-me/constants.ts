@@ -2,8 +2,8 @@ import { type TerminalMode } from "@/lib/knowledge";
 
 export const timelineData = [
   { year: "About", role: "me", icon: "user" },
-  { year: "2022", role: "Frontend Architect", icon: "arch" },
-  { year: "2023", role: "UI", icon: "ui" },
+  { year: "2025", role: "Frontend Architect", icon: "arch" },
+  { year: "2024", role: "UI", icon: "ui" },
 ];
 
 export type AboutHistoryItem = {
